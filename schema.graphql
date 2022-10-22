@@ -1,0 +1,30 @@
+type Badge @entity {
+  id: ID!
+  badgeId: String!
+  owner: User!
+  tokenId: BigInt!
+  mintedOn: BigInt!
+  txnHash: Bytes!
+  tokenURI: String!
+  tokenURIRaw: Bytes
+  metadata: Metadata @derivedFrom(field: "badgePointed")
+}
+
+type Metadata @entity {
+  id: ID!
+  badgePointed: Badge!
+  name: String!
+  description: String!
+  image: String!
+  external_url: String!
+  external_id: String!
+  tags: [String!]!
+
+  properties: [String!]
+}
+
+type User @entity {
+  id: ID!
+  badgesCnt: BigInt!
+  badges: [Badge!] @derivedFrom(field: "owner")
+}
