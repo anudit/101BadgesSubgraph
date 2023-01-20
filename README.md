@@ -1,6 +1,6 @@
 # 101.xyz badges
 
-Build completed: QmVB6ejSw2cVcunRyJw6M6KpDS98L85nmW6LYYhVzNT4WH
+Build completed: QmU7dVXbuVdqChAthTTQxJtmEGG6Sxr6En6DR66qZaShV9
 
 Deployed to https://thegraph.com/explorer/subgraph/anudit/101badges
 

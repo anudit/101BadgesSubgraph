@@ -3,7 +3,26 @@ import {
   Transfer,
 } from "../generated/Contract/Contract"
 import { Metadata, Badge, User } from "../generated/schema"
-import { ipfs, JSONValue,  json, JSONValueKind, BigInt } from "@graphprotocol/graph-ts"
+import { ipfs, JSONValue,  json, BigInt, TypedMap, JSONValueKind  } from "@graphprotocol/graph-ts"
+
+const extractValue = (key: string, dict: TypedMap<string, JSONValue>): string | null=> {
+
+  const propDeets = dict.get(key);
+  if(propDeets){
+    let dictObj = propDeets.toObject();
+    const propValue = dictObj.get('value');
+    if (propValue) {
+      return propValue.toString();
+    }
+    else {
+      return null
+    }
+  }
+  else {
+    return null
+  }
+
+}
 
 export function handleTransfer(event: Transfer): void {
 
@@ -51,6 +70,21 @@ export function handleTransfer(event: Transfer): void {
 
       const image = jsonData.get("image");
       if (image) metaDataEntity.image = image.toString();
+
+      const properties = jsonData.get("properties");
+      let propertiesJson = properties ? properties.toObject() : null;
+      
+      if (propertiesJson){
+
+        metaDataEntity.visibility = extractValue('visibility', propertiesJson);
+        metaDataEntity.course_id = extractValue('course_id', propertiesJson);
+        metaDataEntity.creator_id = extractValue('creator_id', propertiesJson);
+        metaDataEntity.difficulty = extractValue('difficulty', propertiesJson);
+        metaDataEntity.category = extractValue('category', propertiesJson);
+        metaDataEntity.verified_human = extractValue('verified_human', propertiesJson);
+
+      }
+      
 
       const external_id = jsonData.get("external_id");
       if (external_id) {

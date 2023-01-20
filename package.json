@@ -4,6 +4,7 @@
   "scripts": {
     "codegen": "graph codegen",
     "build": "graph build",
+    "auth": "graph auth",
     "deploy": "graph deploy --product hosted-service anudit/101badges",
     "create-local": "graph create --node http://localhost:8020/ 101badges",
     "remove-local": "graph remove --node http://localhost:8020/ 101badges",
