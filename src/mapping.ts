@@ -3,7 +3,7 @@ import {
   Transfer,
 } from "../generated/Contract/Contract"
 import { Metadata, Badge, User } from "../generated/schema"
-import { ipfs, JSONValue,  json, BigInt, TypedMap, JSONValueKind  } from "@graphprotocol/graph-ts"
+import { ipfs, JSONValue,  json, BigInt, TypedMap } from "@graphprotocol/graph-ts"
 
 const extractValue = (key: string, dict: TypedMap<string, JSONValue>): string | null=> {
 
@@ -11,15 +11,41 @@ const extractValue = (key: string, dict: TypedMap<string, JSONValue>): string | 
   if(propDeets){
     let dictObj = propDeets.toObject();
     const propValue = dictObj.get('value');
+    if (propValue) return propValue.toString();
+    else return null
+  }
+  else return null
+
+}
+
+const extractValueBigInt = (key: string, dict: TypedMap<string, JSONValue>): BigInt => {
+
+  const propDeets = dict.get(key);
+  if(propDeets){
+    let dictObj = propDeets.toObject();
+    const propValue = dictObj.get('value');
+    if (propValue) return propValue.toBigInt();
+    else return new BigInt(0);
+  }
+  else return new BigInt(0);
+
+}
+
+const extractValueBool = (key: string, dict: TypedMap<string, JSONValue>): boolean => {
+
+  const propDeets = dict.get(key);
+  if(propDeets){
+    let dictObj = propDeets.toObject();
+    const propValue = dictObj.get('value');
     if (propValue) {
-      return propValue.toString();
+      return propValue.toBool();
     }
     else {
-      return null
+      return false
     }
   }
   else {
-    return null
+    return false
   }
 
 }
@@ -77,11 +103,11 @@ export function handleTransfer(event: Transfer): void {
       if (propertiesJson){
 
         metaDataEntity.visibility = extractValue('visibility', propertiesJson);
+        metaDataEntity.category = extractValue('category', propertiesJson);
         metaDataEntity.course_id = extractValue('course_id', propertiesJson);
         metaDataEntity.creator_id = extractValue('creator_id', propertiesJson);
-        metaDataEntity.difficulty = extractValue('difficulty', propertiesJson);
-        metaDataEntity.category = extractValue('category', propertiesJson);
-        metaDataEntity.verified_human = extractValue('verified_human', propertiesJson);
+        metaDataEntity.difficulty = extractValueBigInt('difficulty', propertiesJson);
+        // metaDataEntity.verified_human = extractValueBool('verified_human', propertiesJson);
 
       }
       

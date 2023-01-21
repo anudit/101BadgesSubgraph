@@ -19,12 +19,12 @@ type Metadata @entity {
   external_url: String!
   external_id: String!
   tags: [String!]!
+  visibility: String
+  category: String
   course_id: String
   creator_id: String
-  difficulty: String
-  category: String
-  verified_human: String
-  visibility: String
+  difficulty: BigInt
+  verified_human: Boolean
 }
 
 type User @entity {
